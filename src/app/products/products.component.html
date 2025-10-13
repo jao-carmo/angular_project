@@ -1,4 +1,16 @@
-<h2>Lista de Produtos</h2>
+<div class="header-section">
+  <h2>Lista de Produtos</h2>
+  <div class="header-actions">
+    <button mat-stroked-button routerLink="/" class="back-button">
+      <mat-icon>arrow_back</mat-icon>
+      Voltar
+    </button>
+    <button mat-raised-button color="primary" (click)="openDialog()" class="add-button">
+      <mat-icon>add</mat-icon>
+      Adicionar Produto
+    </button>
+  </div>
+</div>
 
 <table mat-table [dataSource]="products" class="mat-elevation-z8 full-width">
 
@@ -50,8 +62,3 @@
   <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
   <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
 </table>
-
-<button mat-raised-button color="primary" (click)="openDialog()" class="add-button">
-  <mat-icon>add</mat-icon>
-  Adicionar Produto
-</button>

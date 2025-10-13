@@ -1,5 +1,6 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
 import { MatButtonModule } from '@angular/material/button';
 import { MatTableModule } from '@angular/material/table';
 import { MatIconModule } from '@angular/material/icon';
@@ -12,7 +13,7 @@ import { ProductDialogComponent } from '../product-dialog/product-dialog.compone
 @Component({
   selector: 'app-products',
   standalone: true,
-  imports: [CommonModule, MatButtonModule, MatTableModule, MatIconModule, MatTooltipModule, MatDialogModule],
+  imports: [CommonModule, RouterModule, MatButtonModule, MatTableModule, MatIconModule, MatTooltipModule, MatDialogModule],
   templateUrl: './products.component.html',
   styleUrls: ['./products.component.css']
 })

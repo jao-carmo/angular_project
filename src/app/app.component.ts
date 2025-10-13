@@ -6,21 +6,14 @@ import { RouterOutlet } from '@angular/router';
   standalone: true,
   imports: [RouterOutlet],
   template: `
-    <div class="container">
-      <h1>Dashboard de Produtos - Supabase</h1>
+    <div class="app-container">
       <router-outlet></router-outlet>
     </div>
   `,
   styles: [`
-    .container {
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 20px;
-    }
-    h1 {
-      text-align: center;
-      color: #3f51b5;
-      margin-bottom: 30px;
+    .app-container {
+      min-height: 100vh;
+      background: linear-gradient(to bottom, #f8f9fa 0%, #e9ecef 100%);
     }
   `]
 })

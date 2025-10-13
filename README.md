@@ -39,10 +39,12 @@ CREATE POLICY "Enable all operations" ON products FOR ALL USING (true);
 
 ## ✨ Funcionalidades
 
+✅ Página inicial moderna  
 ✅ CRUD completo de produtos  
 ✅ Upload de imagens via URL  
 ✅ Preview em tempo real  
 ✅ Interface Material Design  
+✅ Navegação entre páginas  
 ✅ Confirmação antes de excluir  
 
 ## � Licença
