@@ -2,11 +2,11 @@
 
 Dashboard de gerenciamento de produtos com Angular 17 e Supabase.
 
-## 🚀 Tecnologias
+## Tecnologias
 
 Angular 17 • Angular Material • Supabase • TypeScript
 
-## ⚡ Início Rápido
+## Início Rápido
 
 ```bash
 # Instalar dependências
@@ -18,7 +18,7 @@ npm start
 
 Acesse: `http://localhost:4200`
 
-## �️ Configurar Banco de Dados
+## Configurar Banco de Dados
 
 Execute no SQL Editor do Supabase:
 
@@ -37,7 +37,7 @@ ALTER TABLE products ENABLE ROW LEVEL SECURITY;
 CREATE POLICY "Enable all operations" ON products FOR ALL USING (true);
 ```
 
-## ✨ Funcionalidades
+## Funcionalidades
 
 ✅ Página inicial moderna  
 ✅ CRUD completo de produtos  
@@ -45,8 +45,4 @@ CREATE POLICY "Enable all operations" ON products FOR ALL USING (true);
 ✅ Preview em tempo real  
 ✅ Interface Material Design  
 ✅ Navegação entre páginas  
-✅ Confirmação antes de excluir  
-
-## � Licença
-
-MIT
+✅ Confirmação antes de excluir
