@@ -1,0 +1,63 @@
+<div class="register-container">
+  <div class="register-card">
+    <div class="header">
+      <h2>Criar Conta</h2>
+      <p class="subtitle">Preencha os dados para se cadastrar</p>
+    </div>
+
+    <form (ngSubmit)="onRegister()">
+      <!-- Mensagem de erro -->
+      <div class="error-message" *ngIf="errorMessage">
+        <span>{{ errorMessage }}</span>
+        <button type="button" class="close-btn" (click)="clearError()">&times;</button>
+      </div>
+
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input 
+          id="email"
+          [(ngModel)]="email" 
+          name="email" 
+          type="email"
+          placeholder="seu@email.com" 
+          required 
+          (input)="clearError()"
+        />
+      </div>
+
+      <div class="form-group">
+        <label for="password">Senha</label>
+        <input 
+          id="password"
+          [(ngModel)]="password" 
+          name="password" 
+          type="password" 
+          placeholder="Mínimo 6 caracteres" 
+          required 
+          (input)="clearError()"
+        />
+      </div>
+
+      <div class="form-group">
+        <label for="confirmPassword">Confirmar Senha</label>
+        <input 
+          id="confirmPassword"
+          [(ngModel)]="confirmPassword" 
+          name="confirmPassword" 
+          type="password" 
+          placeholder="Digite a senha novamente" 
+          required 
+          (input)="clearError()"
+        />
+      </div>
+
+      <button type="submit" [disabled]="loading" class="submit-btn">
+        {{ loading ? 'Criando conta...' : 'Criar Conta' }}
+      </button>
+    </form>
+
+    <div class="footer">
+      <p>Já tem uma conta? <a routerLink="/login">Fazer login</a></p>
+    </div>
+  </div>
+</div>

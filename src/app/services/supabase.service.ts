@@ -1,16 +1,71 @@
 import { Injectable, signal } from '@angular/core';
-import { createClient, SupabaseClient } from '@supabase/supabase-js';
+import { createClient, SupabaseClient, User } from '@supabase/supabase-js';
 import { Product } from '../models/product';
 import { environment } from '../../environments/environment';
 
 @Injectable({ providedIn: 'root' })
 export class SupabaseService {
   private supabase: SupabaseClient;
+
+  // Produtos
   products = signal<Product[]>([]);
+
+  // Usuário logado
+  user = signal<User | null>(null);
 
   constructor() {
     this.supabase = createClient(environment.supabaseUrl, environment.supabaseKey);
+
+    // Inicializa usuário
+    this.supabase.auth.getSession().then(({ data }) => {
+      this.user.set(data?.session?.user ?? null);
+    });
+
+    // Observa mudanças de autenticação
+    this.supabase.auth.onAuthStateChange((_event, session) => {
+      this.user.set(session?.user ?? null);
+    });
   }
+
+  // -------------------------
+  // Auth
+  // -------------------------
+
+  async login(email: string, password: string) {
+    const { data, error } = await this.supabase.auth.signInWithPassword({ 
+      email, 
+      password 
+    });
+    if (error) throw error;
+    this.user.set(data.user);
+    return data.user;
+  }
+
+  async signUp(email: string, password: string) {
+    const { data, error } = await this.supabase.auth.signUp({
+      email,
+      password,
+      options: {
+        emailRedirectTo: window.location.origin
+      }
+    });
+    if (error) throw error;
+    // Se auto-confirmação está habilitada, o usuário já estará logado
+    if (data.user) {
+      this.user.set(data.user);
+    }
+    return data;
+  }
+
+  async logout() {
+    const { error } = await this.supabase.auth.signOut();
+    if (error) throw error;
+    this.user.set(null);
+  }
+
+  // -------------------------
+  // Produtos (CRUD)
+  // -------------------------
 
   async loadProducts() {
     const { data, error } = await this.supabase
