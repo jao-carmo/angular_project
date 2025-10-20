@@ -113,6 +113,14 @@ input::placeholder {
   color: #aaa;
 }
 
+.hint {
+  display: block;
+  margin-top: 0.5rem;
+  color: #888;
+  font-size: 0.85rem;
+  font-style: italic;
+}
+
 .submit-btn {
   width: 100%;
   padding: 0.85rem;

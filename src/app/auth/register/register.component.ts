@@ -49,28 +49,51 @@ export class RegisterComponent {
     this.errorMessage = '';
 
     try {
-      const { user, session } = await this.supabase.signUp(this.email, this.password);
-      
-      if (session) {
+      const result = await this.supabase.signUp(this.email, this.password);
+
+      if (result.session) {
         // Usuário auto-confirmado e logado
-        alert('Conta criada com sucesso!');
+        alert('✅ Conta criada com sucesso! Você já está logado.');
         this.router.navigate(['/']);
-      } else {
+      } else if (result.user) {
         // Necessita confirmação de email
-        alert('Conta criada! Verifique seu email para confirmar o cadastro.');
+        alert('✅ Conta criada! Verifique seu email para confirmar o cadastro.');
         this.router.navigate(['/login']);
       }
     } catch (err: any) {
-      this.errorMessage = err.message || 'Erro ao criar conta!';
-      console.error('Erro no registro:', err);
+      // Tratamento de erros específicos
+      console.error('Erro completo no registro:', err);
+      
+      if (err.message?.includes('invalid')) {
+        this.errorMessage = 'Email inválido! Use um endereço de email real (ex: usuario@gmail.com)';
+      } else if (err.message?.includes('already registered') || err.message?.includes('already been registered')) {
+        this.errorMessage = 'Este email já está cadastrado. Tente fazer login.';
+      } else if (err.message?.includes('não foi possível')) {
+        this.errorMessage = err.message; // Mensagem já formatada do service
+      } else {
+        this.errorMessage = err.message || 'Erro ao criar conta!';
+      }
     } finally {
       this.loading = false;
     }
   }
 
   private isValidEmail(email: string): boolean {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return emailRegex.test(email);
+    // Validação mais rigorosa de email
+    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    
+    if (!emailRegex.test(email)) {
+      return false;
+    }
+
+    // Lista de domínios válidos comuns (opcional, mas ajuda o usuário)
+    const domain = email.split('@')[1]?.toLowerCase();
+    const commonDomains = ['gmail.com', 'yahoo.com', 'hotmail.com', 'outlook.com', 
+                          'live.com', 'icloud.com', 'protonmail.com', 'teste.com'];
+    
+    // Se não estiver na lista comum, apenas avisa mas permite
+    // (o Supabase fará a validação final)
+    return true;
   }
 
   clearError() {

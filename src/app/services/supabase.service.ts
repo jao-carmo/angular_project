@@ -49,11 +49,22 @@ export class SupabaseService {
         emailRedirectTo: window.location.origin
       }
     });
+    
     if (error) throw error;
+    
+    // Verifica se o usuário foi criado
+    // Se user existe mas session não, pode ser:
+    // 1. Confirmação de email necessária
+    // 2. Email já existe e Supabase retornou sucesso falso (fake success)
+    if (!data.user) {
+      throw new Error('Não foi possível criar a conta. O email pode já estar cadastrado.');
+    }
+    
     // Se auto-confirmação está habilitada, o usuário já estará logado
-    if (data.user) {
+    if (data.user && data.session) {
       this.user.set(data.user);
     }
+    
     return data;
   }
 
