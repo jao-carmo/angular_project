@@ -1,5 +1,6 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
 import { MatButtonModule } from '@angular/material/button';
 import { MatTableModule } from '@angular/material/table';
 import { MatIconModule } from '@angular/material/icon';
@@ -20,6 +21,7 @@ export class ProductsComponent implements OnInit {
   displayedColumns: string[] = ['image', 'name', 'description', 'price', 'actions'];
   supabaseService = inject(SupabaseService);
   dialog = inject(MatDialog);
+  router = inject(Router);
 
   ngOnInit() {
     this.supabaseService.loadProducts();
@@ -58,5 +60,14 @@ export class ProductsComponent implements OnInit {
   onImageError(event: Event): void {
     const img = event.target as HTMLImageElement;
     img.src = 'https://via.placeholder.com/60?text=Sem+Imagem';
+  }
+
+  async onLogout() {
+    try {
+      await this.supabaseService.logout();
+      this.router.navigate(['/login']);
+    } catch (err: any) {
+      alert('Erro ao fazer logout: ' + err.message);
+    }
   }
 }

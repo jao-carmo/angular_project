@@ -1,4 +1,10 @@
-<h2>Lista de Produtos</h2>
+<div class="header">
+  <h2>Lista de Produtos</h2>
+  <button mat-stroked-button (click)="onLogout()" class="logout-button">
+    <mat-icon>logout</mat-icon>
+    Sair
+  </button>
+</div>
 
 <table mat-table [dataSource]="products" class="mat-elevation-z8 full-width">
 
