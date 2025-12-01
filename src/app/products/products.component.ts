@@ -1,4 +1,4 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, inject, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { MatButtonModule } from '@angular/material/button';
@@ -7,6 +7,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { SupabaseService } from '../services/supabase.service';
+import { CartService } from '../services/cart.service';
 import { Product } from '../models/product';
 import { ProductDialogComponent } from '../product-dialog/product-dialog.component';
 
@@ -20,7 +21,11 @@ import { ProductDialogComponent } from '../product-dialog/product-dialog.compone
 export class ProductsComponent implements OnInit {
   displayedColumns: string[] = ['image', 'name', 'description', 'price', 'actions'];
   supabaseService = inject(SupabaseService);
+  cartService = inject(CartService);
   dialog = inject(MatDialog);
+
+  // Computed para obter a contagem de itens no carrinho
+  cartItemCount = computed(() => this.cartService.itemCount());
 
   ngOnInit() {
     this.supabaseService.loadProducts();
@@ -59,5 +64,18 @@ export class ProductsComponent implements OnInit {
   onImageError(event: Event): void {
     const img = event.target as HTMLImageElement;
     img.src = 'https://via.placeholder.com/60?text=Sem+Imagem';
+  }
+
+  // Métodos do carrinho
+  addToCart(product: Product): void {
+    this.cartService.addToCart(product);
+  }
+
+  isInCart(productId: number): boolean {
+    return this.cartService.isInCart(productId);
+  }
+
+  getCartQuantity(productId: number): number {
+    return this.cartService.getQuantity(productId);
   }
 }

@@ -19,13 +19,23 @@
           <p class="subtitle">Gerencie seu catálogo completo</p>
         </div>
       </div>
-      <button mat-raised-button color="primary" (click)="openDialog()" class="add-button">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/>
-          <path d="M12 8v8M8 12h8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-        </svg>
-        Novo Produto
-      </button>
+      <div class="header-actions">
+        <button mat-stroked-button routerLink="/cart" class="cart-button">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M9 20a1 1 0 1 0 0 2 1 1 0 0 0 0-2zM20 20a1 1 0 1 0 0 2 1 1 0 0 0 0-2z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          Carrinho
+          <span class="cart-count" *ngIf="cartItemCount() > 0">{{ cartItemCount() }}</span>
+        </button>
+        <button mat-raised-button color="primary" (click)="openDialog()" class="add-button">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/>
+            <path d="M12 8v8M8 12h8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+          Novo Produto
+        </button>
+      </div>
     </div>
 
     <!-- Products Grid -->
@@ -40,13 +50,13 @@
             class="product-image"
             (error)="onImageError($event)">
           <div class="product-overlay">
-            <button mat-mini-fab color="primary" (click)="openDialog(product)" class="action-btn">
+            <button mat-mini-fab color="primary" (click)="openDialog(product)" class="action-btn" matTooltip="Editar">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                 <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
               </svg>
             </button>
-            <button mat-mini-fab color="warn" (click)="deleteProduct(product.id!)" class="action-btn">
+            <button mat-mini-fab color="warn" (click)="deleteProduct(product.id!)" class="action-btn" matTooltip="Excluir">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <polyline points="3 6 5 6 21 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                 <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
@@ -59,13 +69,31 @@
           <p class="product-description">{{product.description || 'Sem descrição'}}</p>
           <div class="product-footer">
             <span class="product-price">{{product.price | currency:'BRL'}}</span>
-            <div class="product-badge">
+            <div class="product-badge" *ngIf="!isInCart(product.id!)">
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
               </svg>
               Disponível
             </div>
+            <div class="product-badge in-cart" *ngIf="isInCart(product.id!)">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M9 20a1 1 0 1 0 0 2 1 1 0 0 0 0-2zM20 20a1 1 0 1 0 0 2 1 1 0 0 0 0-2z" stroke="currentColor" stroke-width="2"/>
+                <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6" stroke="currentColor" stroke-width="2"/>
+              </svg>
+              No Carrinho ({{ getCartQuantity(product.id!) }})
+            </div>
           </div>
+          <!-- Add to Cart Button -->
+          <button mat-raised-button 
+                  [color]="isInCart(product.id!) ? 'accent' : 'primary'" 
+                  (click)="addToCart(product)" 
+                  class="add-to-cart-btn">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M9 20a1 1 0 1 0 0 2 1 1 0 0 0 0-2zM20 20a1 1 0 1 0 0 2 1 1 0 0 0 0-2z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            {{ isInCart(product.id!) ? 'Adicionar Mais' : 'Adicionar ao Carrinho' }}
+          </button>
         </div>
       </div>
     </div>
