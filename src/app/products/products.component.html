@@ -1,64 +1,98 @@
-<div class="header-section">
-  <h2>Lista de Produtos</h2>
-  <div class="header-actions">
-    <button mat-stroked-button routerLink="/" class="back-button">
-      <mat-icon>arrow_back</mat-icon>
-      Voltar
-    </button>
-    <button mat-raised-button color="primary" (click)="openDialog()" class="add-button">
-      <mat-icon>add</mat-icon>
-      Adicionar Produto
-    </button>
+<div class="products-wrapper">
+  <!-- Animated background -->
+  <div class="animated-bg">
+    <div class="circle circle-1"></div>
+    <div class="circle circle-2"></div>
+  </div>
+
+  <div class="products-container">
+    <!-- Header Section -->
+    <div class="header-section">
+      <div class="header-left">
+        <button mat-icon-button routerLink="/" class="back-button">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M19 12H5M12 19l-7-7 7-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+        <div class="header-title">
+          <h1>Meus Produtos</h1>
+          <p class="subtitle">Gerencie seu catálogo completo</p>
+        </div>
+      </div>
+      <button mat-raised-button color="primary" (click)="openDialog()" class="add-button">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/>
+          <path d="M12 8v8M8 12h8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+        Novo Produto
+      </button>
+    </div>
+
+    <!-- Products Grid -->
+    <div class="products-grid" *ngIf="products.length > 0">
+      <div *ngFor="let product of products; let i = index" 
+           class="product-card"
+           [style.animation-delay]="(i * 0.05) + 's'">
+        <div class="product-image-wrapper">
+          <img 
+            [src]="product.imageUrl || 'https://via.placeholder.com/300?text=Sem+Imagem'" 
+            [alt]="product.name"
+            class="product-image"
+            (error)="onImageError($event)">
+          <div class="product-overlay">
+            <button mat-mini-fab color="primary" (click)="openDialog(product)" class="action-btn">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </button>
+            <button mat-mini-fab color="warn" (click)="deleteProduct(product.id!)" class="action-btn">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <polyline points="3 6 5 6 21 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+        <div class="product-info">
+          <h3 class="product-name">{{product.name}}</h3>
+          <p class="product-description">{{product.description || 'Sem descrição'}}</p>
+          <div class="product-footer">
+            <span class="product-price">{{product.price | currency:'BRL'}}</span>
+            <div class="product-badge">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              Disponível
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Empty State -->
+    <div class="empty-state" *ngIf="products.length === 0">
+      <div class="empty-icon">
+        <svg width="120" height="120" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect x="3" y="3" width="18" height="18" rx="2" stroke="url(#gradient)" stroke-width="2"/>
+          <path d="M12 8v8M8 12h8" stroke="url(#gradient)" stroke-width="2" stroke-linecap="round"/>
+          <defs>
+            <linearGradient id="gradient" x1="0" y1="0" x2="24" y2="24" gradientUnits="userSpaceOnUse">
+              <stop stop-color="#667eea"/>
+              <stop offset="1" stop-color="#764ba2"/>
+            </linearGradient>
+          </defs>
+        </svg>
+      </div>
+      <h2>Nenhum produto cadastrado</h2>
+      <p>Comece adicionando seu primeiro produto ao catálogo</p>
+      <button mat-raised-button color="primary" (click)="openDialog()" class="empty-action-btn">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/>
+          <path d="M12 8v8M8 12h8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+        Adicionar Primeiro Produto
+      </button>
+    </div>
   </div>
 </div>
-
-<table mat-table [dataSource]="products" class="mat-elevation-z8 full-width">
-
-  <!-- Imagem -->
-  <ng-container matColumnDef="image">
-    <th mat-header-cell *matHeaderCellDef> Imagem </th>
-    <td mat-cell *matCellDef="let product">
-      <img 
-        [src]="product.imageUrl || 'https://via.placeholder.com/60?text=Sem+Imagem'" 
-        alt="{{product.name}}"
-        class="product-image"
-        (error)="onImageError($event)">
-    </td>
-  </ng-container>
-
-  <!-- Nome -->
-  <ng-container matColumnDef="name">
-    <th mat-header-cell *matHeaderCellDef> Nome </th>
-    <td mat-cell *matCellDef="let product"> {{product.name}} </td>
-  </ng-container>
-
-  <!-- Descrição -->
-  <ng-container matColumnDef="description">
-    <th mat-header-cell *matHeaderCellDef> Descrição </th>
-    <td mat-cell *matCellDef="let product" class="description-cell"> 
-      {{product.description || '-'}} 
-    </td>
-  </ng-container>
-
-  <!-- Preço -->
-  <ng-container matColumnDef="price">
-    <th mat-header-cell *matHeaderCellDef> Preço </th>
-    <td mat-cell *matCellDef="let product"> {{product.price | currency:'BRL'}} </td>
-  </ng-container>
-
-  <!-- Ações -->
-  <ng-container matColumnDef="actions">
-    <th mat-header-cell *matHeaderCellDef> Ações </th>
-    <td mat-cell *matCellDef="let product">
-      <button mat-icon-button color="primary" (click)="openDialog(product)" matTooltip="Editar">
-        <mat-icon>edit</mat-icon>
-      </button>
-      <button mat-icon-button color="warn" (click)="deleteProduct(product.id!)" matTooltip="Excluir">
-        <mat-icon>delete</mat-icon>
-      </button>
-    </td>
-  </ng-container>
-
-  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-  <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-</table>

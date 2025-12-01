@@ -1,19 +1,55 @@
 <div class="register-container">
+  <!-- Decorative shapes -->
+  <div class="shape shape-1"></div>
+  <div class="shape shape-2"></div>
+  <div class="shape shape-3"></div>
+
   <div class="register-card">
+    <div class="logo-section">
+      <div class="logo-icon">
+        <svg width="60" height="60" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="30" cy="30" r="28" stroke="url(#gradient)" stroke-width="4"/>
+          <path d="M30 20v20M20 30h20" stroke="url(#gradient)" stroke-width="4" stroke-linecap="round"/>
+          <defs>
+            <linearGradient id="gradient" x1="0" y1="0" x2="60" y2="60" gradientUnits="userSpaceOnUse">
+              <stop stop-color="#667eea"/>
+              <stop offset="1" stop-color="#764ba2"/>
+            </linearGradient>
+          </defs>
+        </svg>
+      </div>
+    </div>
+
     <div class="header">
-      <h2>Criar Conta</h2>
-      <p class="subtitle">Preencha os dados para se cadastrar</p>
+      <h2>Crie sua conta 🚀</h2>
+      <p class="subtitle">Comece a gerenciar seus produtos agora</p>
     </div>
 
     <form (ngSubmit)="onRegister()">
       <!-- Mensagem de erro -->
       <div class="error-message" *ngIf="errorMessage">
+        <div class="error-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/>
+            <path d="M12 8v4M12 16h.01" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+        </div>
         <span>{{ errorMessage }}</span>
-        <button type="button" class="close-btn" (click)="clearError()">&times;</button>
+        <button type="button" class="close-btn" (click)="clearError()">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M18 6L6 18M6 6l12 12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+        </button>
       </div>
 
       <div class="form-group">
-        <label for="email">Email</label>
+        <label for="email">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <polyline points="22,6 12,13 2,6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          Email
+        </label>
         <input 
           id="email"
           [(ngModel)]="email" 
@@ -23,11 +59,23 @@
           required 
           (input)="clearError()"
         />
-        <small class="hint">💡 Use um email real (Gmail, Outlook, etc)</small>
+        <small class="hint">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/>
+            <path d="M12 16v-4M12 8h.01" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+          Use um email real (Gmail, Outlook, etc)
+        </small>
       </div>
 
       <div class="form-group">
-        <label for="password">Senha</label>
+        <label for="password">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="3" y="11" width="18" height="11" rx="2" ry="2" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M7 11V7a5 5 0 0 1 10 0v4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          Senha
+        </label>
         <input 
           id="password"
           [(ngModel)]="password" 
@@ -40,7 +88,12 @@
       </div>
 
       <div class="form-group">
-        <label for="confirmPassword">Confirmar Senha</label>
+        <label for="confirmPassword">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M20 12v6a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-6M12 3v13M5 10l7-7 7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          Confirmar Senha
+        </label>
         <input 
           id="confirmPassword"
           [(ngModel)]="confirmPassword" 
@@ -53,9 +106,20 @@
       </div>
 
       <button type="submit" [disabled]="loading" class="submit-btn">
-        {{ loading ? 'Criando conta...' : 'Criar Conta' }}
+        <span *ngIf="!loading">Criar Conta</span>
+        <span *ngIf="loading" class="loading-spinner">
+          <svg width="20" height="20" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" fill="none" opacity="0.25"/>
+            <path d="M12 2a10 10 0 0 1 10 10" stroke="currentColor" stroke-width="4" fill="none" stroke-linecap="round"/>
+          </svg>
+          Criando conta...
+        </span>
       </button>
     </form>
+
+    <div class="divider">
+      <span>ou</span>
+    </div>
 
     <div class="footer">
       <p>Já tem uma conta? <a routerLink="/login">Fazer login</a></p>

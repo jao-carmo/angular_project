@@ -1,34 +1,104 @@
-<h1 mat-dialog-title style="font-weight: 400; font-size: 24px; color: #1a1a1a; letter-spacing: -0.5px; padding: 32px 32px 0 32px;">Produto</h1>
+<div class="dialog-header">
+  <div class="header-icon">
+    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect x="3" y="3" width="18" height="18" rx="2" stroke="url(#gradient)" stroke-width="2"/>
+      <path d="M9 3v18M3 9h18M3 15h18M15 3v18" stroke="url(#gradient)" stroke-width="2"/>
+      <defs>
+        <linearGradient id="gradient" x1="0" y1="0" x2="24" y2="24" gradientUnits="userSpaceOnUse">
+          <stop stop-color="#667eea"/>
+          <stop offset="1" stop-color="#764ba2"/>
+        </linearGradient>
+      </defs>
+    </svg>
+  </div>
+  <div class="header-text">
+    <h1 mat-dialog-title>{{data.product.id ? 'Editar' : 'Novo'}} Produto</h1>
+    <p class="subtitle">Preencha as informações do produto</p>
+  </div>
+</div>
 
 <div mat-dialog-content>
-  <mat-form-field appearance="outline" class="full-width">
-    <mat-label>Nome</mat-label>
-    <input matInput [(ngModel)]="data.product.name">
-  </mat-form-field>
+  <div class="form-grid">
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>
+        <div class="label-with-icon">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2M12 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          Nome do Produto
+        </div>
+      </mat-label>
+      <input matInput [(ngModel)]="data.product.name" placeholder="Ex: Notebook Dell Inspiron">
+    </mat-form-field>
 
-  <mat-form-field appearance="outline" class="full-width">
-    <mat-label>Descrição</mat-label>
-    <input matInput [(ngModel)]="data.product.description">
-  </mat-form-field>
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>
+        <div class="label-with-icon">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M14 2v6h6M16 13H8M16 17H8M10 9H8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          Descrição
+        </div>
+      </mat-label>
+      <textarea matInput [(ngModel)]="data.product.description" rows="3" placeholder="Descreva as características do produto"></textarea>
+    </mat-form-field>
 
-  <mat-form-field appearance="outline" class="full-width">
-    <mat-label>Preço</mat-label>
-    <input matInput type="number" [(ngModel)]="data.product.price">
-  </mat-form-field>
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>
+        <div class="label-with-icon">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 1v22M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          Preço
+        </div>
+      </mat-label>
+      <input matInput type="number" [(ngModel)]="data.product.price" placeholder="0.00" step="0.01" min="0">
+      <span matPrefix>R$&nbsp;</span>
+    </mat-form-field>
 
-  <mat-form-field appearance="outline" class="full-width">
-    <mat-label>URL da Imagem</mat-label>
-    <input matInput [(ngModel)]="data.product.imageUrl" placeholder="https://exemplo.com/imagem.jpg">
-  </mat-form-field>
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>
+        <div class="label-with-icon">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="3" y="3" width="18" height="18" rx="2" ry="2" stroke="currentColor" stroke-width="2"/>
+            <circle cx="8.5" cy="8.5" r="1.5" stroke="currentColor" stroke-width="2"/>
+            <path d="M21 15l-5-5L5 21" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          URL da Imagem
+        </div>
+      </mat-label>
+      <input matInput [(ngModel)]="data.product.imageUrl" placeholder="https://exemplo.com/imagem.jpg">
+    </mat-form-field>
+  </div>
 
   <!-- Preview da Imagem -->
   <div class="image-preview" *ngIf="data.product.imageUrl">
-    <p class="preview-label">Preview:</p>
-    <img [src]="data.product.imageUrl" alt="Preview do produto" (error)="onImageError($event)">
+    <div class="preview-header">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        <circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <span>Preview da Imagem</span>
+    </div>
+    <div class="preview-image-wrapper">
+      <img [src]="data.product.imageUrl" alt="Preview do produto" (error)="onImageError($event)">
+    </div>
   </div>
 </div>
 
 <div mat-dialog-actions align="end">
-  <button mat-stroked-button (click)="onCancel()">Cancelar</button>
-  <button mat-raised-button color="primary" (click)="onSave()">Salvar</button>
+  <button mat-stroked-button (click)="onCancel()" class="cancel-btn">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M18 6L6 18M6 6l12 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+    Cancelar
+  </button>
+  <button mat-raised-button color="primary" (click)="onSave()" class="save-btn">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M17 21v-8H7v8M7 3v5h8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+    Salvar
+  </button>
 </div>
